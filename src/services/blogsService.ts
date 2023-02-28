@@ -13,7 +13,7 @@ export const blogsService = {
       isMembership: false,
     };
 
-    const result = await blogsRepository.createBlog(createdBlog);
+    const result :BlogDBModel = await blogsRepository.createBlog(createdBlog);
     return result;
   },
   //UPDATE

@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { countTotalAndPages, createFilterSort } from "../paginator";
-import { BlogDBModel, PostDBModel } from "../types/dbType";
+import { BlogDBModel, PostDBModel, UserDBModel } from "../types/dbType";
 import { PaginatorEnd, PaginatorStart } from "../types/paginatorType";
 import { blogsCollections, postsCollections } from "./db";
 
