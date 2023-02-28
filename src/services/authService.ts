@@ -73,6 +73,9 @@ export const authService = {
     );
     if (!userFind) {
       return null }
+      if (userFind.emailConfimation.isConfirmed) {
+        return false;
+      }
     const confimationCode = uuidv4();
     const expirationDate = add(new Date(), {
       hours: 1,

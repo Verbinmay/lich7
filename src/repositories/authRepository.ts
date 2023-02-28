@@ -10,21 +10,21 @@ export const authRepository = {
     return result;
   },
 
-  //FIND USERS BY LOGIN AND EMAIL
-  async findUsersByLoginAndEmail(login: string, email: string) {
-    const result: UserDBModel[] = await usersCollections
-      .find({
-        $or: [
-          { login: login },
-          { email: email },
-          { email: login },
-          { login: email },
-        ],
-      })
-      .toArray();
+  // //FIND USERS BY LOGIN AND EMAIL
+  // async findUsersByLoginAndEmail(login: string, email: string) {
+  //   const result: UserDBModel[] = await usersCollections
+  //     .find({
+  //       $or: [
+  //         { login: login },
+  //         { email: email },
+  //         { email: login },
+  //         { login: email },
+  //       ],
+  //     })
+  //     .toArray();
      
-    return  result.length>0? true:false;
-  },
+  //   return  result.length>0? true:false;
+  // },
   //FIND USER BY CONFIRM CODE
   async findUserByConfimationCode(code: string) {
     const result = await usersCollections.findOne({

@@ -57,31 +57,40 @@ authRouter.post(
   emailCreateValidation,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    const emailOrLoginFinder: boolean =
-      await authRepository.findUsersByLoginAndEmail(
-        req.body.login,
-        req.body.email
-      );
-    if (emailOrLoginFinder) {
+    const emailFinder = await authRepository.findUserByLoginOrEmail(
+      req.body.email
+    );
+    if (emailFinder) {
       res
         .status(400)
         .send(errorMaker("login or email already exists", "email"));
-    } else {
-      const registationPost: UserDBModel = await authService.createUser(
-        req.body.login,
-        req.body.email,
-        req.body.password
-      );
-      const message = await registrationMessage(
-        registationPost.emailConfimation.confimationCode
-      );
-      await emailsAdapter.sendEmail(
-        req.body.email,
-        message.subject,
-        message.result
-      );
-      res.send(204);
+      return;
     }
+    const loginFinder = await authRepository.findUserByLoginOrEmail(
+      req.body.login
+    );
+
+    if (loginFinder) {
+      res
+        .status(400)
+        .send(errorMaker("login or email already exists", "login"));
+      return;
+    }
+
+    const registationPost: UserDBModel = await authService.createUser(
+      req.body.login,
+      req.body.email,
+      req.body.password
+    );
+    const message = await registrationMessage(
+      registationPost.emailConfimation.confimationCode
+    );
+    await emailsAdapter.sendEmail(
+      req.body.email,
+      message.subject,
+      message.result
+    );
+    res.send(204);
   }
 );
 
