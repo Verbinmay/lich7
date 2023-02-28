@@ -56,7 +56,7 @@ export const blogsRepository = {
       { $set: { id: result.insertedId.toString() } },
       { returnDocument: "after" }
     );
-    return addId.value;
+    return addId.value!;
   },
   //UPDATE
   async updateBlog(

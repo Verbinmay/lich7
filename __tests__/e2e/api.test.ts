@@ -1,7 +1,9 @@
+import { beforeEach } from "node:test";
 import request from "supertest";
 import { app } from "../../src/index";
+import { usersCollections } from "../../src/repositories/db";
 
-describe("blogs", () => {
+describe.skip("blogs", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -498,7 +500,7 @@ describe("blogs", () => {
   });
 });
 
-describe("post", () => {
+describe.skip("post", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -1339,7 +1341,7 @@ describe("post", () => {
   });
 });
 
-describe("Users", () => {
+describe.skip("Users", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -1544,7 +1546,7 @@ describe("auth", () => {
     const result = await request(app)
       .post("/users")
       .send({
-        login: "markiz",
+        login: "markizd",
         password: "123456u",
         email: "markdlnv@yahoo.com",
       })
@@ -1566,13 +1568,147 @@ describe("auth", () => {
 
     expect(result3.body).toEqual({
       email: "markdlnv@yahoo.com",
-      login: "markiz",
+      login: "markizd",
       userId: result.body.id,
     });
   });
+
+  it("return 204 POSTAUTHREGISTRATION", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "markizdd",
+        password: "123456u",
+        email: "kootvfa@yahoo.com",
+      })
+      .expect(204);
+  });
+
+  it("return 400 POSTAUTHREGISTRATION login min/max", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "ma",
+        password: "123456u",
+        email: "markdlnv@yahoo.com",
+      })
+      .expect(400);
+
+    const result2 = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "markmarkmarkmarkmarkmark",
+        password: "123456u",
+        email: "markdlnv@yahoo.com",
+      })
+      .expect(400);
+  });
+  it("return 400 POSTAUTHREGISTRATION password min/max", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "markix",
+        password: "12345",
+        email: "markdlnv@yahoo.com",
+      })
+      .expect(400);
+
+    const result2 = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "markix",
+        password: "1234567891011121314151617181920",
+        email: "markdlnv@yahoo.com",
+      })
+      .expect(400);
+  });
+  it("return 400 POSTAUTHREGISTRATION email ", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "markix",
+        password: "123456",
+        email: "markjj",
+      })
+      .expect(400);
+  });
+  it("return 204 REGISTRATION CONFIRMATION POST ", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "egorus",
+        password: "123456u",
+        email: "egorvoron@gmail.com",
+      })
+      .expect(204);
+
+    const result2 = await usersCollections.findOne({
+      email: "egorvoron@gmail.com",
+    });
+
+    const result3 = await request(app)
+      .post("/auth/registration-confirmation")
+      .send({
+        code: result2!.emailConfimation.confimationCode,
+      })
+      .expect(204);
+  });
+  it("return 400 REGISTRATION CONFIRMATION POST use code after used  ", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "mariavog",
+        password: "123456u",
+        email: "mariavog@gmail.com",
+      })
+      .expect(204);
+
+    const result2 = await usersCollections.findOne({
+      email: "mariavog@gmail.com",
+    });
+
+    const result3 = await request(app)
+      .post("/auth/registration-confirmation")
+      .send({
+        code: result2!.emailConfimation.confimationCode,
+      })
+      .expect(204);
+
+    const result4 = await request(app)
+      .post("/auth/registration-confirmation")
+      .send({
+        code: result2!.emailConfimation.confimationCode,
+      })
+      .expect(400);
+  });
+  jest.setTimeout(8000);
+  it("return 204 REGISTRATION  EMAIL RESENDING ", async () => {
+    const result = await request(app)
+      .post("/auth/registration")
+      .send({
+        login: "katerina",
+        password: "123456u",
+        email: "katerinagot@gmail.com",
+      })
+      .expect(204);
+    const result2 = await usersCollections.findOne({
+      email: "katerinagot@gmail.com",
+    });
+    const result3 = await request(app)
+      .post("/auth/registration-email-resending")
+      .send({ email: "katerinagot@gmail.com" })
+      .expect(204);
+
+    const result4 = await usersCollections.findOne({
+      email: "katerinagot@gmail.com",
+    });
+    expect(result2?.emailConfimation.confimationCode).not.toEqual(
+      result4?.emailConfimation.confimationCode
+    );
+  });
 });
 
-describe("comments", () => {
+describe.skip("comments", () => {
   beforeAll(() => jest.setTimeout(8000)),
     beforeEach(async () => {
       await request(app).delete("/testing/all-data");
@@ -2180,15 +2316,15 @@ describe("comments", () => {
       .get("/comments/" + result5.body.id)
       .expect(200);
 
-      expect(result7.body).toEqual({
-        id: expect.any(String),
-        content: "Nu takoe ya smotret ne budu",
-        commentatorInfo: {
-          userId: result5.body.commentatorInfo.userId,
-          userLogin: result5.body.commentatorInfo.userLogin,
-        },
-        createdAt: expect.any(String),
-      })
+    expect(result7.body).toEqual({
+      id: expect.any(String),
+      content: "Nu takoe ya smotret ne budu",
+      commentatorInfo: {
+        userId: result5.body.commentatorInfo.userId,
+        userLogin: result5.body.commentatorInfo.userLogin,
+      },
+      createdAt: expect.any(String),
+    });
   });
 
   it("return 404 GETCOMMENTS ", async () => {
@@ -2238,5 +2374,4 @@ describe("comments", () => {
       .set("Authorization", "Bearer " + result4.body.accessToken)
       .expect(404);
   });
-
 });

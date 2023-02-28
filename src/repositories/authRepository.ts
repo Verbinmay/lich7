@@ -12,7 +12,7 @@ export const authRepository = {
 
   //FIND USERS BY LOGIN AND EMAIL
   async findUsersByLoginAndEmail(login: string, email: string) {
-    const result: UserDBModel[] | null = await usersCollections
+    const result: UserDBModel[] = await usersCollections
       .find({
         $or: [
           { login: login },
@@ -22,7 +22,8 @@ export const authRepository = {
         ],
       })
       .toArray();
-    return result;
+     
+    return  result.length>0? true:false;
   },
   //FIND USER BY CONFIRM CODE
   async findUserByConfimationCode(code: string) {

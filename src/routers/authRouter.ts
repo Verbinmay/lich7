@@ -57,7 +57,7 @@ authRouter.post(
   emailCreateValidation,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    const emailOrLoginFinder: UserDBModel[] | null =
+    const emailOrLoginFinder: boolean =
       await authRepository.findUsersByLoginAndEmail(
         req.body.login,
         req.body.email
@@ -91,7 +91,7 @@ authRouter.post(
   async (req: Request, res: Response) => {
     const confirmPost = await authService.confirmEmail(req.body.code);
     if (confirmPost) {
-      res.send(201);
+      res.send(204);
     } else {
       res
         .status(400)

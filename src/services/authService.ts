@@ -39,7 +39,7 @@ export const authService = {
           hours: 1,
           minutes: 3,
         }),
-        isConfirmed: false,
+      isConfirmed: false,
       },
     };
     const result: UserDBModel = await usersRepository.createUser(createdUser);
