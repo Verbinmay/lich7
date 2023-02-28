@@ -498,8 +498,6 @@ describe("blogs", () => {
   });
 });
 
-//TODO ADD POST COMMENT AND GET
-
 describe("post", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
