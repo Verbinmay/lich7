@@ -5,6 +5,7 @@ import {
   loginOrEmailValidation,
   passwordValidation,
 } from "../middlewares/inputValidationMiddleware";
+import { authRepository } from "../repositories/authRepository";
 import { usersRepository } from "../repositories/usersRepository";
 import { authService } from "../services/authService";
 import { LoginSuccessViewModel, MeViewModel } from "../types/authType";
@@ -41,3 +42,29 @@ authRouter.get("/me", authMiddleware, async (req: Request, res: Response) => {
   };
   res.status(200).send(viewAuthGet);
 });
+
+authRouter.post(
+  "/registration",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    const emailOrLoginFinder: UserDBModel[] | null =
+      await authRepository.findUsersByLoginAndEmail(
+        req.body.login,
+        req.body.email
+      );
+    if (emailOrLoginFinder) {
+      res.status(400).send({
+        errorsMessages: [
+          { message: "login or email already exists", field: "email" },
+        ],
+      });
+    } else {
+    const registationPost: UserDBModel = await authService.createUser(
+      req.body.login,
+      req.body.email,
+      req.body.password,
+    );
+    res.send(204)
+    }
+  }
+);

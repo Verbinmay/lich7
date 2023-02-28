@@ -16,7 +16,7 @@ export const usersRepository = {
       },
       { returnDocument: "after" }
     );
-    return addId.value;
+    return addId.value!;
   },
 
   //GET
@@ -89,13 +89,5 @@ export const usersRepository = {
   async deleteUser(id: string) {
     const result = await usersCollections.deleteOne({ id: id });
     return result.deletedCount === 1;
-  },
-
-  //GETUSER BY LOGINOREMAIL
-  async findUserByLoginOrEmail(loginOrEmail: string) {
-    const result: UserDBModel | null = await usersCollections.findOne({
-      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
-    });
-    return result;
   },
 };
