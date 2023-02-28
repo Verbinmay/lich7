@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import { emailsAdapter } from "../adapters/emailAdapter";
 import { registrationMessage } from "../adapters/messages";
 import { authMiddleware } from "../middlewares/authMiddleware";
 import {
@@ -14,8 +15,6 @@ import { usersRepository } from "../repositories/usersRepository";
 import { authService } from "../services/authService";
 import { LoginSuccessViewModel, MeViewModel } from "../types/authType";
 import { UserDBModel } from "../types/dbType";
-
-
 
 export const authRouter = Router({});
 
@@ -72,9 +71,14 @@ authRouter.post(
         req.body.email,
         req.body.password
       );
-      const message = await registrationMessage(registationPost.emailConfimation.confimationCode)
-       const s = await emailsAdapter.sendEmail()
-      
+      const message = await registrationMessage(
+        registationPost.emailConfimation.confimationCode
+      );
+      await emailsAdapter.sendEmail(
+        req.body.email,
+        message.subject,
+        message.result
+      );
       res.send(204);
     }
   }
