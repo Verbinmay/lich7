@@ -42,9 +42,26 @@ export const authService = {
         isConfirmed: false,
       },
     };
-    const result: UserDBModel = await usersRepository.createUser(
-      createdUser
-    );
+    const result: UserDBModel = await usersRepository.createUser(createdUser);
+    return result;
+  },
+
+  //CONFIRMEMAIL
+  async confirmEmail(code: string) {
+    const userFind = await authRepository.findUserByConfimationCode(code);
+    if (!userFind) {
+      return false;
+    }
+    if (userFind.emailConfimation.isConfirmed) {
+      return false;
+    }
+    if (userFind.emailConfimation.confimationCode !== code) {
+      return false;
+    }
+    if (userFind.emailConfimation.expirationDate < new Date()) {
+      return false;
+    }
+    const result = await authRepository.updateConfirmation(userFind.id);
     return result;
   },
 };

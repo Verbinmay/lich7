@@ -4,5 +4,5 @@ export const registrationMessage = (code: string) => {
     code +
     "'>complete registration</a></p>";
 
-  return result;
+  return { subject: "REGISTRATION", result: result };
 };

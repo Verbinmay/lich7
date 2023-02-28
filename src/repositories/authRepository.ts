@@ -12,14 +12,31 @@ export const authRepository = {
 
   //FIND USERS BY LOGIN AND EMAIL
   async findUsersByLoginAndEmail(login: string, email: string) {
-    const result: UserDBModel[] | null = await usersCollections.find({
-      $or: [
-        { login: login },
-        { email: email },
-        { email: login },
-        { login: email },
-      ],
-    }).toArray();
+    const result: UserDBModel[] | null = await usersCollections
+      .find({
+        $or: [
+          { login: login },
+          { email: email },
+          { email: login },
+          { login: email },
+        ],
+      })
+      .toArray();
     return result;
+  },
+  //FIND USER BY CONFIRM CODE
+  async findUserByConfimationCode(code: string) {
+    const result = await usersCollections.findOne({
+      "emailConfimation.confimationCode": code,
+    });
+    return result;
+  },
+  //UPDATE CONFIRMATION
+  async updateConfirmation(id: string) {
+    const result = await usersCollections.updateOne(
+      { id: id },
+      { $set: { "emailConfimation.isConfirmed": true } }
+    );
+    return true;
   },
 };

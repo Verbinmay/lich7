@@ -5,7 +5,7 @@ import { usersCollections } from "./db";
 
 export const usersRepository = {
   //POST
-  async createUser(createdUser: any) {
+  async createUser(createdUser: UserDBModel) {
     const result = await usersCollections.insertOne(createdUser);
     const addId = await usersCollections.findOneAndUpdate(
       { _id: result.insertedId },
