@@ -5,7 +5,7 @@ import { usersCollections } from "./db";
 
 export const usersRepository = {
   //POST
-  async createUser(createdUser: UserDBModel) {
+  async createUser(createdUser: any) {
     const result = await usersCollections.insertOne(createdUser);
     const addId = await usersCollections.findOneAndUpdate(
       { _id: result.insertedId },
@@ -90,4 +90,14 @@ export const usersRepository = {
     const result = await usersCollections.deleteOne({ id: id });
     return result.deletedCount === 1;
   },
+
+async updateCodeAndDate(confimationCode:string, expirationDate:Date, id:string){
+  const result = await usersCollections.findOneAndUpdate({id:id},{$set:{"emailConfimation.confimationCode":confimationCode, "emailConfimation.expirationDate":expirationDate }},
+  { returnDocument: "after" }
+  )
+  return result.value!
+}
+
 };
+
+

@@ -39,4 +39,11 @@ export const authRepository = {
     );
     return true;
   },
+    //FIND USER BY CONFIRM CODE
+    async findUserByEmail(email: string) {
+      const result = await usersCollections.findOne({
+        email: email,
+      });
+      return result;
+    },
 };

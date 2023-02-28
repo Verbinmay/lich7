@@ -40,7 +40,7 @@ export type UserDBModel =  {
   id: string;
   emailConfimation:{
     confimationCode:string,
-    expirationDate: any,
+    expirationDate: Date,
     isConfirmed:boolean
   }
 };

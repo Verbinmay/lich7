@@ -49,7 +49,7 @@ export const blogsRepository = {
     return result;
   },
   //POST
-  async createBlog(createdBlog: BlogDBModel) {
+  async createBlog(createdBlog: any) {
     const result = await blogsCollections.insertOne(createdBlog);
     const addId = await blogsCollections.findOneAndUpdate(
       { _id: result.insertedId },
@@ -83,7 +83,7 @@ export const blogsRepository = {
   },
 
   //POST-POST-BLOGID
-  async postPostByBlogId(createdPost: PostDBModel) {
+  async postPostByBlogId(createdPost: any) {
     const result = await postsCollections.insertOne(createdPost);
     const addId = await postsCollections.findOneAndUpdate(
       { _id: result.insertedId },

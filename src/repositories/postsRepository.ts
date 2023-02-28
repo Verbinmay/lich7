@@ -43,7 +43,7 @@ export const postsRepository = {
   },
 
   //POST
-  async crearePost(createdPost: PostDBModel) {
+  async crearePost(createdPost: any){
     const result = await postsCollections.insertOne(createdPost);
     const addId = await postsCollections.findOneAndUpdate(
       { _id: result.insertedId },
@@ -85,7 +85,7 @@ export const postsRepository = {
   },
 
   //POSTCOMMENTSBYPOSTID
-  async createCommentsByPostId(createdComment: CommentDBModel) {
+  async createCommentsByPostId(createdComment: any) {
     const result = await commentsCollections.insertOne(createdComment);
     const addId = await commentsCollections.findOneAndUpdate(
       { _id: result.insertedId },

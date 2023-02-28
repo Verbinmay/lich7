@@ -104,9 +104,30 @@ authRouter.post(
   }
 );
 
-//REGISTRATION EMAIL RESENDING 
+//REGISTRATION EMAIL RESENDING
 authRouter.post(
   "/registration-email-resending",
   async (req: Request, res: Response) => {
-const 
-  })
+    const emailResendingPost = await authService.resendingEmail(req.body.email);
+    if (emailResendingPost) {
+      const message = await registrationMessage(
+        emailResendingPost.emailConfimation.confimationCode
+      );
+      await emailsAdapter.sendEmail(
+        req.body.email,
+        message.subject,
+        message.result
+      );
+      res.send(204);
+    } else {
+      res
+        .status(400)
+        .send(
+          errorMaker(
+            " inputModel has incorrect values or if email is already confirmed",
+            "email"
+          )
+        );
+    }
+  }
+);

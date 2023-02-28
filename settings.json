@@ -1,0 +1,12 @@
+{
+    "saveAndRunExt": {
+      "commands": [
+        {
+          "match": "\\.test.ts$",
+          "isShellCommand": true,
+          "cmd": "echo 'yarn test'"
+        }
+      ]
+    }
+  }
+  

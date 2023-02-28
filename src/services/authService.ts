@@ -64,4 +64,25 @@ export const authService = {
     const result = await authRepository.updateConfirmation(userFind.id);
     return result;
   },
+
+  //RESENDING EMAIL
+
+  async resendingEmail(email: string) {
+    const userFind: UserDBModel | null = await authRepository.findUserByEmail(
+      email
+    );
+    if (!userFind) {
+      return null }
+    const confimationCode = uuidv4();
+    const expirationDate = add(new Date(), {
+      hours: 1,
+      minutes: 3,
+    });
+    const userUpdate: UserDBModel = await usersRepository.updateCodeAndDate(
+      confimationCode,
+      expirationDate,
+      userFind.id
+    );
+    return userUpdate;
+  },
 };
