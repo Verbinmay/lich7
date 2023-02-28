@@ -85,14 +85,11 @@ export const blogsRepository = {
   //POST-POST-BLOGID
   async postPostByBlogId(createdPost: any) {
     const result = await postsCollections.insertOne(createdPost);
-    const addId = await postsCollections.updateOne(
+    const addId = await postsCollections.findOneAndUpdate(
       { _id: result.insertedId },
-      { $set: { id: result.insertedId.toString() } }
+      { $set: { id: result.insertedId.toString() } },{ returnDocument: "after" }
     );
-    const resultFind = await postsCollections.findOne({
-      _id: result.insertedId,
-    });
-    return resultFind;
+    return addId.value;
   },
 
   //GET-POST-BLOGID
