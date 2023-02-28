@@ -6,7 +6,7 @@ import {
   passwordValidation,
 } from "../middlewares/inputValidationMiddleware";
 import { usersRepository } from "../repositories/usersRepository";
-import { usersService } from "../services/usersService";
+import { authService } from "../services/authService";
 import { LoginSuccessViewModel, MeViewModel } from "../types/authType";
 import { UserDBModel } from "../types/dbType";
 
@@ -18,7 +18,7 @@ authRouter.post(
   passwordValidation,
   inputValidationMiddleware,
   async (req: Request, res: Response) => {
-    const authPost: LoginSuccessViewModel | null = await usersService.postAuth(
+    const authPost: LoginSuccessViewModel | null = await authService.postAuth(
       req.body.loginOrEmail,
       req.body.password
     );
