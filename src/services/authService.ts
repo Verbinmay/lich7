@@ -48,7 +48,7 @@ export const authService = {
 
   //CONFIRMEMAIL
   async confirmEmail(code: string) {
-    const userFind = await authRepository.findUserByConfimationCode(code);
+    const userFind: UserDBModel|null = await authRepository.findUserByConfimationCode(code);
     if (!userFind) {
       return false;
     }
@@ -61,7 +61,7 @@ export const authService = {
     if (userFind.emailConfimation.expirationDate < new Date()) {
       return false;
     }
-    const result = await authRepository.updateConfirmation(userFind.id);
+    const result:boolean = await authRepository.updateConfirmation(userFind.id);
     return result;
   },
 

@@ -55,6 +55,7 @@ authRouter.post(
   loginCreateValidation,
   passwordCreateValidation,
   emailCreateValidation,
+  inputValidationMiddleware,
   async (req: Request, res: Response) => {
     const emailOrLoginFinder: UserDBModel[] | null =
       await authRepository.findUsersByLoginAndEmail(
