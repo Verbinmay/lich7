@@ -1,7 +1,6 @@
 import { ObjectId } from "mongodb";
 import { CommentatorInfo } from "./commentsType";
 
-
 export type BlogDBModel = {
   _id: ObjectId;
   name: string;
@@ -29,18 +28,20 @@ export type CommentDBModel = {
   commentatorInfo: CommentatorInfo;
   createdAt: string;
   id: string;
-}
+};
 
-export type UserDBModel =  {
+export type UserDBModel = {
   _id: ObjectId;
   login: string;
   email: string;
   createdAt: string;
   hash: string;
   id: string;
-  emailConfimation:{
-    confimationCode:string,
-    expirationDate: Date,
-    isConfirmed:boolean
-  }
+  emailConfimation: {
+    confimationCode: string;
+    expirationDate: Date;
+    isConfirmed: boolean;
+  };
 };
+
+

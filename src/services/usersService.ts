@@ -12,6 +12,11 @@ export const usersService = {
       email: email,
       createdAt: new Date().toISOString(),
       hash: hashBcrypt,
+      emailConfimation: {
+        confimationCode: "default",
+        expirationDate: new Date(),
+        isConfirmed: true,
+      },
     };
     const result: UserDBModel | null = await usersRepository.createUser(
       createdUser
@@ -24,5 +29,4 @@ export const usersService = {
     const result: boolean = await usersRepository.deleteUser(id);
     return result;
   },
-  
 };
