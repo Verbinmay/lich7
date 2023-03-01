@@ -3,7 +3,7 @@ import request from "supertest";
 import { app } from "../../src/index";
 import { usersCollections } from "../../src/repositories/db";
 
-describe.skip("blogs", () => {
+describe("blogs", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -500,7 +500,7 @@ describe.skip("blogs", () => {
   });
 });
 
-describe.skip("post", () => {
+describe("post", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -1341,7 +1341,7 @@ describe.skip("post", () => {
   });
 });
 
-describe.skip("Users", () => {
+describe("Users", () => {
   beforeAll(async () => {
     await request(app).delete("/testing/all-data");
   });
@@ -1708,7 +1708,7 @@ describe("auth", () => {
   });
 });
 
-describe.skip("comments", () => {
+describe("comments", () => {
   beforeAll(() => jest.setTimeout(8000)),
     beforeEach(async () => {
       await request(app).delete("/testing/all-data");
